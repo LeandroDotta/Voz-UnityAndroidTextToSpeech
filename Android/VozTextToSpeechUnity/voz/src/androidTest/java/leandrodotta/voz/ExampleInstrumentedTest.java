@@ -32,29 +32,58 @@ public class ExampleInstrumentedTest {
     @Test
     public void speak() throws ExecutionException, InterruptedException {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        VozTextToSpeech voz = new VozTextToSpeech(appContext);
+        new TestSpeak().test(appContext);
+    }
 
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
-            while (!voz.isAvailable()) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+    private class TestSpeak implements TextToSpeechListener {
+        private boolean speakDone = false;
+
+        public void test(Context context) throws ExecutionException, InterruptedException {
+            VozTextToSpeech voz = new VozTextToSpeech(context, this);
+
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.submit(() -> {
+                while (!voz.isAvailable()) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).get();
+            }).get();
 
-        voz.speak("Hello World");
+            voz.speak("Hello World");
 
-        executor.submit(() -> {
-            try {
-                    Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                    e.printStackTrace();
-            }
-        }).get();
+            executor.submit(() -> {
+                while (!speakDone)
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+            }).get();
 
-        Assert.assertTrue(true);
+            Assert.assertTrue(true);
+        }
+
+        @Override
+        public void onInit() {}
+
+        @Override
+        public void onError() {}
+
+        @Override
+        public void onSpeechStart(String utteranceId) {}
+
+        @Override
+        public void onSpeechDone(String utteranceId) {
+            speakDone = true;
+        }
+
+        @Override
+        public void onSpeechStop(String utteranceId) {}
+
+        @Override
+        public void onSpeechError(String utteranceId, int errorCode) {}
     }
 }

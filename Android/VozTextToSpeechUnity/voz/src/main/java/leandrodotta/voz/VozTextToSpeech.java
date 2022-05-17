@@ -16,23 +16,32 @@ public class VozTextToSpeech extends UtteranceProgressListener implements TextTo
     private static final String TAG = VozTextToSpeech.class.getSimpleName();
 
     private TextToSpeech tts;
+    private TextToSpeechListener listener;
 
     private float pitch;
     private float speechRate;
     private boolean available;
 
-    public VozTextToSpeech(final Context context) {
+    public VozTextToSpeech(final Context context, TextToSpeechListener listener) {
         tts = new TextToSpeech(context, this);
+        this.listener = listener;
     }
 
     @Override
     public void onInit(int status) {
-        if (status == TextToSpeech.ERROR)
+        if (status == TextToSpeech.ERROR) {
+            if (listener != null)
+                listener.onError();
+
             return;
+        }
 
         tts.setLanguage(Locale.getDefault());
         tts.setOnUtteranceProgressListener(this);
         available = true;
+
+        if (listener != null)
+            listener.onInit();
     }
 
     public void speak(String textToSpeak){
@@ -144,28 +153,33 @@ public class VozTextToSpeech extends UtteranceProgressListener implements TextTo
 
     @Override
     public void onStart(String utteranceId) {
-        Log.d(TAG, "Utterance '" + utteranceId + "' started");
+        if (listener != null)
+            listener.onSpeechStart(utteranceId);
     }
 
     @Override
     public void onDone(String utteranceId) {
-        Log.d(TAG, "Utterance '" + utteranceId + "' done");
+        if (listener != null)
+            listener.onSpeechDone(utteranceId);
     }
 
     @Override
     public void onStop(String utteranceId, boolean interrupted) {
         super.onStop(utteranceId, interrupted);
-        Log.d(TAG, "Utterance '" + utteranceId + "' stopped");
+        if (listener != null)
+            listener.onSpeechStop(utteranceId);
     }
 
     @Override
     public void onError(String utteranceId, int errorCode) {
         super.onError(utteranceId, errorCode);
-        Log.d(TAG, "Utterance '" + utteranceId + "' failed with error (" + errorCode + ")");
+        if (listener != null)
+            listener.onSpeechError(utteranceId, errorCode);
     }
 
     @Override
     public void onError(String utteranceId) {
-        Log.d(TAG, "Utterance '" + utteranceId + "' failed with error");
+        if (listener != null)
+            listener.onSpeechError(utteranceId, -1);
     }
 }
