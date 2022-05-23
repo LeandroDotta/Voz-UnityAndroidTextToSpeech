@@ -4,7 +4,6 @@ import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.speech.tts.Voice;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,9 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class VozTextToSpeech extends UtteranceProgressListener implements TextToSpeech.OnInitListener{
-    private static final String TAG = VozTextToSpeech.class.getSimpleName();
-
+public class VozTextToSpeech extends UtteranceProgressListener implements TextToSpeech.OnInitListener {
     private TextToSpeech tts;
     private TextToSpeechListener listener;
 
