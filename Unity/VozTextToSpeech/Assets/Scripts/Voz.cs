@@ -182,6 +182,16 @@ namespace leandrodotta.voz
             #endif
         }
 
+        public int Stop()
+        {
+            #if UNITY_ANDROID && !UNITY_EDITOR
+            return voz.Call<int>("stop");
+            #else
+            Debug.unityLogger.LogWarning("Voz", "Text-to-speech is only available for Android devices. 'Stop' method will not do anything and will always return '-1'");
+            return -1;
+            #endif   
+        }
+
         public bool SetPitch(float pitch)
         {
             #if UNITY_ANDROID && !UNITY_EDITOR
