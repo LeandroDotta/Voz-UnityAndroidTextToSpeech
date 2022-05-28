@@ -1222,6 +1222,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7e34098d96d80b48ac4364eafa873c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onInit:
+    m_PersistentCalls:
+      m_Calls: []
+  onError:
+    m_PersistentCalls:
+      m_Calls: []
+  onSpeechStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onSpeechDone:
+    m_PersistentCalls:
+      m_Calls: []
+  onSpeechStop:
+    m_PersistentCalls:
+      m_Calls: []
+  onSpeechError:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1866756975
 Transform:
   m_ObjectHideFlags: 0

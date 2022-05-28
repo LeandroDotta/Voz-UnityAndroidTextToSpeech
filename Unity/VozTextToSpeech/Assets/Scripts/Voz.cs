@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace leandrodotta.voz
 {
@@ -13,6 +14,20 @@ namespace leandrodotta.voz
         private AndroidJavaObject activityContext;
 
         private TextToSpeechListener listener;
+
+        public static event UnityAction OnInit;
+        public static event UnityAction OnError;
+        public static event UnityAction<string> OnSpeechStart;
+        public static event UnityAction<string> OnSpeechDone;
+        public static event UnityAction<string> OnSpeechStop;
+        public static event UnityAction<string> OnSpeechError;
+
+        [SerializeField] private UnityEvent onInit;
+        [SerializeField] private UnityEvent onError;
+        [SerializeField] private UnityEvent<string> onSpeechStart;
+        [SerializeField] private UnityEvent<string> onSpeechDone;
+        [SerializeField] private UnityEvent<string> onSpeechStop;
+        [SerializeField] private UnityEvent<string> onSpeechError;
 
         private void Start()
         {
@@ -205,6 +220,42 @@ namespace leandrodotta.voz
             #else
             Debug.unityLogger.LogWarning("Voz", "Text-to-speech is only available for Android devices. 'Shutdown' method will not do anything");
             #endif
+        }
+
+        private void Init()
+        {
+            onInit?.Invoke();
+            OnInit?.Invoke();
+        }        
+
+        private void Error()
+        {
+            onError?.Invoke();
+            OnError?.Invoke();
+        }
+
+        private void SpeechStart(string utteranceId)
+        {
+            onSpeechStart?.Invoke(utteranceId);
+            OnSpeechStart?.Invoke(utteranceId);
+        }
+
+        private void SpeechDone(string utteranceId)
+        {
+            onSpeechDone?.Invoke(utteranceId);
+            OnSpeechDone?.Invoke(utteranceId);
+        }
+        
+        private void SpeechStop(string utteranceId)
+        {
+            onSpeechStop?.Invoke(utteranceId);
+            OnSpeechStop?.Invoke(utteranceId);
+        }
+
+        private void SpeechError(string utteranceId)
+        {
+            onSpeechError?.Invoke(utteranceId);
+            OnSpeechError?.Invoke(utteranceId);
         }
     }
 }

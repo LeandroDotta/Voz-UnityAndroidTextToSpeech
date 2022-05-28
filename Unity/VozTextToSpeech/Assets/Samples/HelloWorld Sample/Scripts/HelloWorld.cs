@@ -23,12 +23,12 @@ namespace leandrodotta.voz.sample
             }
         }
 
-        private void OnInit()
+        private void Init()
         {
             buttonSpeak.interactable = true;
         }
 
-        private void OnSpeechDone(string utteranceId) 
+        private void SpeechDone(string utteranceId) 
         {
             buttonSpeak.interactable = true;
         }

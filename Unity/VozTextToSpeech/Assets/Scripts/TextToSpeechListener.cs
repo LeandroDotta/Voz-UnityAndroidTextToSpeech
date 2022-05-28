@@ -22,7 +22,7 @@ namespace leandrodotta.voz
             Debug.Log("Voz Initialized");
 
             ActionQueue.Enqueue(() => {
-                component.SendMessage("OnInit");
+                component.SendMessage("Init");
             });
         }
 
@@ -31,7 +31,7 @@ namespace leandrodotta.voz
             Debug.Log("Voz Initialization Error");
 
             ActionQueue.Enqueue(() => {
-                component.SendMessage("OnError");
+                component.SendMessage("Error");
             });
         }
 
@@ -40,7 +40,7 @@ namespace leandrodotta.voz
             Debug.Log($"Voz Speech Started ({utteranceId})");
 
             ActionQueue.Enqueue(() => {
-                component.SendMessage("OnSpeechStart", utteranceId);
+                component.SendMessage("SpeechStart", utteranceId);
             });
         }
 
@@ -49,7 +49,7 @@ namespace leandrodotta.voz
             Debug.Log($"Voz Speech Done ({utteranceId})");
 
             ActionQueue.Enqueue(() => {
-                component.SendMessage("OnSpeechDone", utteranceId);
+                component.SendMessage("SpeechDone", utteranceId);
             });
         }
 
@@ -58,7 +58,7 @@ namespace leandrodotta.voz
             Debug.Log($"Voz Speech Stopped ({utteranceId})");
 
             ActionQueue.Enqueue(() => {
-                component.SendMessage("OnSpeechStop", utteranceId);
+                component.SendMessage("SpeechStop", utteranceId);
             });
         }
 
@@ -67,7 +67,7 @@ namespace leandrodotta.voz
             Debug.Log($"Voz Speech Error ({utteranceId}) | code={errorCode}");
 
             ActionQueue.Enqueue(() => {
-                component.SendMessage("OnSpeechError", utteranceId);
+                component.SendMessage("SpeechError", utteranceId);
             });
         }
     }
