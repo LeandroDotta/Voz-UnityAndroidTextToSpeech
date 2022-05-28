@@ -15,8 +15,8 @@ public class VozTextToSpeech extends UtteranceProgressListener implements TextTo
     private TextToSpeech tts;
     private TextToSpeechListener listener;
 
-    private float pitch;
-    private float speechRate;
+    private float pitch = 1;
+    private float speechRate = 1;
     private boolean available;
 
     public VozTextToSpeech(final Context context, TextToSpeechListener listener) {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using leandrodotta.voz;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.UI.Dropdown;
 
 namespace leandrodotta.voz.sample
 {
@@ -24,6 +25,9 @@ namespace leandrodotta.voz.sample
         [SerializeField] private Button buttonSpeakNow;
         [SerializeField] private InputField inputSpeak;
         [SerializeField] private Button buttonStop;
+        [SerializeField] private Dropdown dropdownVoices;
+        [SerializeField] private Slider sliderPitch;
+        [SerializeField] private Slider sliderSpeechRate;
 
         [Header("Colors")]
         [SerializeField] private Color colorUnavailable = Color.gray;
@@ -53,6 +57,26 @@ namespace leandrodotta.voz.sample
             textButtonStatus.text = TEXT_OK;
             imageButtonStatus.color = colorOK;
             animButton.SetInteger("status", STATUS_OK);
+
+            // Load the voices into the dropdown
+            List<OptionData> options = new List<OptionData>();
+            string currentVoice = voz.CurrentVoice;
+            string[] voices = voz.Voices;
+            int selected = 0;
+            for (int i = 0; i < voices.Length; i++)
+            {
+                options.Add(new OptionData(voices[i]));
+
+                if (voices[i] == currentVoice)
+                    selected = i;
+            }
+
+            dropdownVoices.ClearOptions();
+            dropdownVoices.AddOptions(options);
+            dropdownVoices.SetValueWithoutNotify(selected);
+
+            sliderPitch.SetValueWithoutNotify(voz.Pitch);
+            sliderSpeechRate.SetValueWithoutNotify(voz.SpeechRate);
         }
 
         private void Error()
@@ -101,6 +125,38 @@ namespace leandrodotta.voz.sample
         public void Stop()
         {
             voz.Stop();
+        }
+
+        public void SetVoice(int index)
+        {
+            if (index > dropdownVoices.options.Count)
+                return;
+
+            voz.SetVoice(dropdownVoices.options[index].text);
+            SpeakNow();
+        }
+
+        public void SetPitch(float pitch)
+        {
+            voz.SetPitch(pitch);
+            SpeakNow();
+        }
+
+        public void SetSpeechRate(float rate)
+        {
+            voz.SetSpeechRate(rate);
+            SpeakNow();
+        }
+
+        public void ResetAttributes()
+        {
+            voz.SetVoice(dropdownVoices.options[0].text);
+            dropdownVoices.SetValueWithoutNotify(0);
+            voz.SetPitch(1);
+            sliderPitch.SetValueWithoutNotify(1);
+            voz.SetSpeechRate(1);
+            sliderSpeechRate.SetValueWithoutNotify(1);
+            SpeakNow();
         }
     }
 }
