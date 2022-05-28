@@ -23,6 +23,7 @@ namespace leandrodotta.voz.sample
         [SerializeField] private Image imageButtonStatus;
         [SerializeField] private Button buttonSpeakNow;
         [SerializeField] private InputField inputSpeak;
+        [SerializeField] private Button buttonStop;
 
         [Header("Colors")]
         [SerializeField] private Color colorUnavailable = Color.gray;
@@ -40,6 +41,11 @@ namespace leandrodotta.voz.sample
 
             textButtonStatus.text = TEXT_INITIALIZING;
             imageButtonStatus.color = colorUnavailable;
+        }
+
+        private void Update() 
+        {
+            buttonStop.interactable = voz.IsSpeaking;    
         }
 
         private void Init()
@@ -90,6 +96,11 @@ namespace leandrodotta.voz.sample
         public void SpeakNow()
         {
             voz.SpeakImmediately(inputSpeak.text);
+        }
+
+        public void Stop()
+        {
+            voz.Stop();
         }
     }
 }

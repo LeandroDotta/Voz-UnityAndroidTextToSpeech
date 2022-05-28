@@ -64,8 +64,8 @@ public class VozTextToSpeech extends UtteranceProgressListener implements TextTo
         tts.speak(textToSpeak, flush ? TextToSpeech.QUEUE_FLUSH : TextToSpeech.QUEUE_ADD, null, utteranceId);
     }
 
-    private void stop() {
-        tts.stop();
+    private int stop() {
+        return tts.stop();
     }
 
     public boolean isSpeaking() {
